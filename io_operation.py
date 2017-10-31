@@ -41,5 +41,7 @@ def saveImg(imageURL, fileName):
 # file_write()
 # file_read()
 
-imgUrl='https://img.alicdn.com/imgextra/i3/176817195/TB17IssKFXXXXa1apXXXXXXXXXX_!!0-tstar.jpg_620x10000.jpg';
-saveImg(imgUrl,'D:\\1.jpg')
+# imgUrl='https://img.alicdn.com/imgextra/i3/176817195/TB17IssKFXXXXa1apXXXXXXXXXX_!!0-tstar.jpg_620x10000.jpg';
+# saveImg(imgUrl,'D:\\1.jpg')
+
+file_read()

@@ -14,8 +14,15 @@ import json
 
 
 # 正则表达式
-# match() 匹配成功返回match,否则返回null
+# match() 匹配成功返回match对象,否则返回None
 s = re.match(r'\d{3,5}-\d{5,8}', '010-666666')
+
+print(s)
+if (s == None):
+    print('匹配失败')
+else:
+    print('匹配成功')
+
 
 s='<a class="mm-first" href="//mm.taobao.com/self/album_photo.htm?user_id=176817195&album_id=10000878652&album_flag=0" target="_blank"> <img src="//img.alicdn.com/imgextra/i1/176817195/TB1bmwwKpXXXXXaXpXXXXXXXXXX_!!0-tstar.jpg_240x240xz.jpg" width="125" height="125"> </a> <!--<a class="mm-first" href="//mm.taobao.com/self/album_photo.htm?user_id=176817195&album_id=10000878652&album_flag=0" target="_blank"> <img src="//img.alicdn.com/imgextra/i4/176817195/TB15bsVKFXXXXbuaXXXXXXXXXXX_!!0-tstar.jpg_250x250.j'
 # pattern='href="//mm.taobao.com/self/album_photo.htm?user_id=176817195&album_id=(.*?)&album_flag=0'
@@ -25,11 +32,7 @@ urls=re.findall(pattern2,s)
 for i in urls:
     print(i)
 
-# print(s)
-# if (s == None):
-#     print('匹配失败')
-# else:
-#     print('匹配成功')
+
 
 
 # 查找所有符合条件的数据
