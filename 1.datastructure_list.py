@@ -48,10 +48,12 @@
 squares =[item**2 for item in range(1,11)]
 print(squares)
 print(sum(squares))
+for i in squares:
+    print(i)
 
-squares =[item**2 for item in range(1,11) if item%2==0]
-print(squares)
-print(sum(squares))
+# squares =[item**2 for item in range(1,11) if item%2==0]
+# print(squares)
+# print(sum(squares))
 
 
 # 切片
