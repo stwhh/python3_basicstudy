@@ -5,15 +5,13 @@ class Person:  # 一个空的代码块
     用户类
     """
     def __init__(self, name):
+        """文档字符串-函数描述"""
         self.name = name
         print("我的名字是：" + name)
 
     def say_hi(self):
-        """
+        """问候方法"""
 
-        问候方法
-
-        """
         # print("你好:" + name)
         print("你好:{}".format(self.name))
 

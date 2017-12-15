@@ -1,4 +1,5 @@
 # -*-coding:utf-8-*-
+from collections import OrderedDict
 
 # # 字典 {} 键值对标识，多个可以用[{},{}]跟json的格式一样
 # # 字典是无序的
@@ -87,7 +88,21 @@ for key, values in users.items():
     print('\t住址' + values['住址'])
     print('\t电话' + values['电话'])
 
-message = input('请输入一个值：')
-print(message)
+# message = input('请输入一个值：')
+# print(message)
 
 import  pymysql
+
+users=455;
+print(users)
+
+
+# 有顺序的字典 OrderedDict
+order_dic=OrderedDict()
+order_dic['b']='12458'
+order_dic['id']='655'
+order_dic['c']='65'
+order_dic['a']=7565
+order_dic['4']=888
+for i in order_dic:
+    print(str(i)+'-'+str(order_dic[i]))

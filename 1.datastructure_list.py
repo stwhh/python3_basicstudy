@@ -29,14 +29,14 @@
 #     print('\t'+str(i))
 #
 # # 删除最后一个，并返回最后一个
-# last = list.pop() # 可以带索引，删除指定索引的值
+# last = list.pop() # 可以带索引，删除指定索引的值并弹出这个值，比如pop(0),就是删除第一个元素并弹出
 # print('del 删除的列表2：')
 # for i in list:
 #     print('\t'+str(i))
 # print(last)
 #
 # # 根据值删除（如果出现多次，只删除第一个，需要循环才能都删除）
-# list.remove(2) # 可以带索引，删除指定索引的值
+# list.remove(2) # 可删除指定值
 # list.remove('b') # 删除指定值
 # print('remove 删除的列表：')
 # for i in list:
