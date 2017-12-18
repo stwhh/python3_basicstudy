@@ -33,23 +33,22 @@ class AddVisit:
                     'Referer': url
                 }
                 if (self.is_use_proxy):
-                    r = requests.get(url, headers=headers, proxies=proxies, timeout=3)
                     print('【时间 {}】本次运行代理共{} 个，正在进行第{}个代理访问，代理ip为：{}。'
-                          .format(time.time(), len(ips_all), index + 1, ip))
-                    print('【运行结果】：{0}\n'.format(r.status_code))
+                          .format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), len(ips_all), index + 1, ip))
+                    r = requests.get(url, headers=headers, proxies=proxies, timeout=8)
+                    print('【运行结果】：{}\n'.format(r.status_code))
                     # print(r.content.decode('utf-8'))
-                    print(r.text)
+                    # print(r.text)
                 else:
                     r = requests.get(url, headers=headers)
                     print('【时间 {}】本次运行并未使用代理'.format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
                     print('【运行结果】：{0}\n'.format(r.status_code))
                     # print(r.content.decode('utf-8'))
-                    print(r.text)
+                    # print(r.text)
             except BaseException as ex:
-                print("【时间 {}】请求出错，IP：{}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), ip))
-                print("异常如下：{}\n".format(ex))
+                print("【运行结果】=> 出错：{0}\n".format(ex))
                 continue
-        time.sleep(random.randint(3, 6))  # 爬完一个相册之后等待3-6秒再爬，防止反爬虫
+        time.sleep(random.randint(2, 5))  # 爬完一个相册之后等待2-5秒再爬，防止反爬虫
 
         print('运行结束')
 
@@ -92,4 +91,5 @@ class AddVisit:
 
 
 # AddVisit('https://www.cnblogs.com/', True).get_request()
-AddVisit('http://fl.108.minghu-rolwal.com/?m=vod-detail-id-18089.html', False).get_request()
+# AddVisit('http://mi.tianshitonghe.cn/c11823-26380.html?from=singlemessage', True).get_request()
+AddVisit('http://fl.108.minghu-rolwal.com/?m=vod-detail-id-24344.html', True).get_request()
