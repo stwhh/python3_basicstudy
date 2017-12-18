@@ -1,6 +1,7 @@
 # -*-coding:utf-8-*-
-
+import os
 import requests
+import re
 
 
 # 发起普通请求【登录测试成功】
@@ -96,6 +97,51 @@ def request_uploadfile():
 # common_requests('http://www.jq22.com/emdl.aspx')
 # keepalive_requests()
 # request_uploadfile()
-
 # get_cookies_request('https://www.baidu.com/')
-common_requests_cnblogs()
+# common_requests_cnblogs()
+
+
+# 需要手机抓包看下请求头有哪些东西，现在就写下面俩个
+def request_movie(url):
+    ips_all = read_proxyips()
+    for index, ip in enumerate(ips_all):
+        for key, value in ip.items():
+            proxies = {  # 代理类型+地址
+                key: value
+            }
+            headers = {
+                'User-Agent': 'Mozilla/5.0 (Linux; Android 6.0.1; 1505-A02 Build/MMB29M; wv) AppleWebKit/537.36 (KHTML, like Gecko)'
+                              'Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043520 Safari/537.36 MicroMessenger/6.5.16.1120'
+                              'NetType/WIFI Language/zh_CN',
+                'Referer': url
+            }
+            r = requests.get(url, headers=headers, proxies=proxies)
+            print('本次运行代理共{} 个,正在进行第{}个代理访问。'.format(len(ips_all), index + 1))
+            print(r.content.decode('utf-8'))
+
+
+# 读取代理ip
+def read_proxyips():
+    with open('D:\\ips.txt', 'r', errors='啊，出错了。') as f:
+        ips = []
+        while True:
+            http_address = f.readline().strip()
+            # print(f.read()) # 返回字符串，读取所有
+            # print(f.readlines()) # 返回一个列表，每行数据是列表的一个值，可以用for i in list
+            if (http_address == ''):
+                break
+            try:
+                pattern = re.compile(r'https?')
+                type = re.findall(pattern, http_address)[0]
+                address = http_address[len(type) + 1:]
+                # print('类型：'+type[0])
+                # print('地址：'+address) #因为http后面有一个空格，所以要+1
+                ips.append({type: address})
+            except:
+                continue
+
+    return ips
+
+
+# request_movie('http://fl.108.minghu-rolwal.com/?m=vod-detail-id-18089.html')
+request_movie('https://www.baidu.com/')

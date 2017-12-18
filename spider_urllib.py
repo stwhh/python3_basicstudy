@@ -140,4 +140,3 @@ f.close()
 # print(type(s2))
 # print(parse.urlencode(s))
 # print(parse.urlencode(s2))
-
