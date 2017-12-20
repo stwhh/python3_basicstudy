@@ -154,59 +154,65 @@ class AddVisit:
 
         # 设置请求头
         # 1、phantomjs 设置请求头
-        # dcap = dict(DesiredCapabilities.PHANTOMJS)
-        # dcap["phantomjs.page.settings.userAgent"] = (
-        #     "Mozilla/5.0 (Linux; Android 6.0.1; 1505-A02 Build/MMB29M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043613 Safari/537.36 MicroMessenger/6.5.22.1160 NetType/WIFI Language/zh_CN"
-        # )
+        dcap = dict(DesiredCapabilities.PHANTOMJS)
+        dcap["phantomjs.page.settings.userAgent"] = (
+            "Mozilla/5.0 (Linux; Android 6.0.1; 1505-A02 Build/MMB29M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043613 Safari/537.36 MicroMessenger/6.5.22.1160 NetType/WIFI Language/zh_CN"
+        )
 
         # 2、chrome设置请求头
         # 进入浏览器设置
-        chromeOptions = webdriver.ChromeOptions()
-        chromeOptions.add_argument('lang=zh-CN,en-US;q=0.8')
-        chromeOptions.add_argument('accept-encoding=zh-CN,en-US;q=0.8')
-        chromeOptions.add_argument('host=mi.tianshitonghe.cn')
-        chromeOptions.add_argument('connection=keep-alive')
-        chromeOptions.add_argument('upgrade-insecure-requests=1')
-        chromeOptions.add_argument(
-            'text/html=application/xhtml+xml,application/xml;q=0.9,image/webp,image/wxpic,image/sharpp,*/*;q=0.8')
-        chromeOptions.add_argument(
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('host=mi.tianshitonghe.cn')
+        chrome_options.add_argument('connection=keep-alive')
+        chrome_options.add_argument('upgrade-insecure-requests=1')
+        chrome_options.add_argument('accept-encoding=gzip, deflate')
+        chrome_options.add_argument('lang=zh-CN,en-US;q=0.8')
+        chrome_options.add_argument(
+            'accept=text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/wxpic,image/sharpp,*/*;q=0.8')
+        chrome_options.add_argument(
             'user-agent="Mozilla/5.0 (Linux; Android 6.0.1; 1505-A02 Build/MMB29M; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/53.0.2785.49 Mobile MQQBrowser/6.2 TBS/043613 Safari/537.36 MicroMessenger/6.5.22.1160 NetType/WIFI Language/zh_CN"')
 
-        ips_all = self.read_proxyips()
-        success_count = 0;
-        fail_count = 0;
-        for index, http_address in enumerate(ips_all):  # 列表加了enumerate 可以访问索引
-            try:
-                # chromeOptions.add_argument('--proxy-server=http://ip:port')
-                http_type = http_address['http_type']
-                ip = http_address['ip']
-                chromeOptions.add_argument('--proxy-server={}://{}'.format(http_type, ip))  # 设置代理
-                # driver = webdriver.PhantomJS(desired_capabilities=dcap)
-                driver = webdriver.Chrome(executable_path='D:\chromedriver_win32\chromedriver.exe',
+        success_count = 0
+        fail_count = 0
+        try:
+            if self.is_use_proxy:
+                ips_all = self.read_proxyips()
+                js = "$('.showMore').click();alert(1)"
+                for index, http_address in enumerate(ips_all):  # 列表加了enumerate 可以访问索引
+                    try:
+                        # chromeOptions.add_argument('--proxy-server=http://ip:port')
+                        http_type = http_address['http_type']
+                        ip = http_address['ip']
+                        chrome_options.add_argument('--proxy-server={}://{}'.format(http_type, ip))  # 设置代理
+                        # driver = webdriver.PhantomJS(executable_path=r'D:\phantomjs-2.1.1-windows\bin\phantomjs.exe',
+                        #                           desired_capabilities=dcap)
+                        driver = webdriver.Chrome(executable_path=r'D:\chromedriver_win32\chromedriver.exe',
+                                                  chrome_options=chrome_options)
+                        print('【时间 {}】本次运行代理共{} 个，正在进行第{}个代理访问，代理ip为：{}。'
+                              .format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), len(ips_all), index + 1,
+                                      ip))
+                        driver.get(url)
+                        # js = "$.get('viewdata.php?aid=11823&uid=26380&pv=33)"
+                        driver.execute_script(js)  # 立即执行js,触发记录访问量的程序
+                        success_count += 1
+                        print('【运行结果】：{}\n'.format('未知1'))
+                    except BaseException as ex:
+                        print("【运行结果】=> 出错：{0}\n".format(ex))
+                        fail_count += 1
+                        continue
+                    time.sleep(2)
+            else:
+                driver = webdriver.Chrome(executable_path=r'D:\chromedriver_win32\chromedriver.exe',
                                           # desired_capabilities=dcap,
-                                          chrome_options=chromeOptions)
+                                          chrome_options=chrome_options)
+                driver.get(url)
+                js = "$('.showMore').click()"
+                driver.execute_script(js)
+                print('【时间 {}】本次运行并未使用代理'.format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
+                print('【运行结果】：{0}\n'.format('未知2'))
+        except BaseException as ex:
+            print("【运行结果】=> 出错：{0}\n".format(ex))
 
-                if (self.is_use_proxy):
-                    print('【时间 {}】本次运行代理共{} 个，正在进行第{}个代理访问，代理ip为：{}。'
-                          .format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), len(ips_all), index + 1, ip))
-                    driver.get(url)
-                    # js = "$.get('viewdata.php?aid=11823&uid=26380&pv=33)"
-                    js = "$('.showMore').click()"
-                    driver.execute_script(js)  # 立即执行js,触发记录访问量的程序
-                    success_count += 1
-                    print('【运行结果】：{}\n'.format('未知1'))
-
-                else:
-                    driver.get(url)
-                    driver.execute_script(js)
-                    print('【时间 {}】本次运行并未使用代理'.format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
-                    print('【运行结果】：{0}\n'.format('未知2'))
-
-            except BaseException as ex:
-                print("【运行结果】=> 出错：{0}\n".format(ex))
-                fail_count += 1
-                continue
-        time.sleep(2)
         print('运行结束,本次运行代理总数：{}，成功数量为：{}，失败数量为：{}'.format(len(ips_all), success_count, fail_count))
 
     # 读取代理ip
@@ -252,4 +258,4 @@ class AddVisit:
 # AddVisit('http://mi.adhbio.cn/viewdata.php?aid=11823&uid=26380&pv=37', True).get_request_article(1)
 
 # AddVisit('http://www.baidu.com', False).get_request_byselenium_test()
-AddVisit('http://mi.adhbio.cn/c11823-26380.html?from=singlemessage', True).get_request_byselenium_formal()
+AddVisit('http://mi.tianshitonghe.cn/c12080-26380.html?from=singlemessage', True).get_request_byselenium_formal()
