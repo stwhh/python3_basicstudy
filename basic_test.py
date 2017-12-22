@@ -3,6 +3,7 @@ import re
 from _datetime import datetime, timedelta
 import json
 
+
 # 取出de
 # a = 'abcdefg'
 # print(a.index('a'))
@@ -44,21 +45,21 @@ import json
 # s3=re.finditer(r'\d{3,5}', '010-abc345-d678jdeg57654jd87kal8e77a8e')
 # print(s3)
 
-print(datetime.now())
-
-dt=datetime(2018,12,1,12,34,23)
-
-print(dt)
-print(type(dt))
-
-timestamp=dt.timestamp()
-print(timestamp)
-
-time=datetime.fromtimestamp(timestamp) # 本地时间
-print(time)
-
-utctime=datetime.utcfromtimestamp(timestamp) # 格林威治时间
-print(utctime)
+# print(datetime.now())
+#
+# dt=datetime(2018,12,1,12,34,23)
+#
+# print(dt)
+# print(type(dt))
+#
+# timestamp=dt.timestamp()
+# print(timestamp)
+#
+# time=datetime.fromtimestamp(timestamp) # 本地时间
+# print(time)
+#
+# utctime=datetime.utcfromtimestamp(timestamp) # 格林威治时间
+# print(utctime)
 
 # # str转成时间
 # cday=datetime.strptime('2017-5-6 12:23:34','%Y-%m-%d %H:%M:%S') # 后面的参数必须跟时间格式一致，参数必须要
@@ -68,8 +69,8 @@ print(utctime)
 
 
 # 时间加减
-time_add=time+timedelta(days=3)
-print(time_add)
+# time_add=time+timedelta(days=3)
+# print(time_add)
 #
 #
 #
@@ -100,3 +101,35 @@ def test():
 
 
 # test()
+
+
+g = lambda x:x+1
+print(g(2))
+
+
+def is_odd(a):
+    return a % 2 != 0
+
+foo = [2, 18, 9, 22, 17, 24, 8, 12, 27]
+# lambda 表达式 输入参数x,返回满足条件的 x % 2 == 0
+s = filter(lambda x: x % 2 == 0, foo)
+print(list(s))
+print(list(filter(is_odd, foo)))
+print(chr(66))
+
+a = [1,2,3,4,5,6,7,8,9,0]
+print(all(a))
+print(any(a))
+print(a[slice(3)])
+
+a = [-9,1,-5,3,2,7,12]
+b=sorted(a,key=abs,reverse=True)# 使用绝对值排序，降序
+print(b)
+exec('print("hello world")')
+exec('print(pow(2,3))')
+print(eval('3**2'))
+
+print('a', 'b','c','d',sep='--',end='') # 加了这个下面的print就不换行了
+print(2, 1, 3)
+print(ord('中'))
+print(list(range(10)))

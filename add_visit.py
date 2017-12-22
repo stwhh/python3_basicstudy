@@ -173,7 +173,7 @@ class AddVisit:
                         print('【时间 {}】本次运行代理共{} 个，正在进行第{}个代理访问，代理ip为：{}。'
                               .format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), len(ips_all), index + 1,
                                       ip))
-                        self.get_request_byselenium_formal_byphantomjs(self.is_use_proxy, proxy_type, ip)
+                        self.get_request_byselenium_formal_bychrome(self.is_use_proxy, proxy_type, ip)
                         success_count += 1
                         print('【运行结果】：{}\n'.format('未知1'))
                     except BaseException as ex:
@@ -186,7 +186,7 @@ class AddVisit:
                 #                           # desired_capabilities=dcap,
                 #                           chrome_options=chrome_options)
 
-                self.get_request_byselenium_formal_byphantomjs(self.is_use_proxy)
+                self.get_request_byselenium_formal_bychrome(self.is_use_proxy)
                 success_count += 1
                 print('【时间 {}】本次运行并未使用代理'.format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())))
                 print('【运行结果】：{0}\n'.format('未知2'))
@@ -241,14 +241,15 @@ class AddVisit:
         #     EC.presence_of_element_located((By.ID, "showMore"))
         # )
 
-        # # 以前遇到过driver.get(url)一直不返回，但也不报错的问题，这时程序会卡住，设置超时选项能解决这个问题。
-        # driver.set_page_load_timeout(10)
+        # 以前遇到过driver.get(url)一直不返回，但也不报错的问题，这时程序会卡住，设置超时选项能解决这个问题。
+        driver.set_page_load_timeout(8)
         # # 设置10秒脚本超时时间
-        # driver.set_script_timeout(10)
+        driver.set_script_timeout(8)
         driver.get(url)
 
         # js = "$.get('viewdata.php?aid=11823&uid=26380&pv=33')" # 立即执行js,触发记录访问量的程序
         # time.sleep(5)
+        time.sleep(5) # 等待页面加载完成
         js = "$('.showMore').click();"
         driver.execute_script(js)
         time.sleep(5)  # 需要等待3s才会执行请求记录，否则不算访问量，5s
@@ -313,6 +314,11 @@ class AddVisit:
                                          desired_capabilities=dcap, service_args=service_args)
         else:
             driver = webdriver.PhantomJS(executable_path=executable_path,desired_capabilities=dcap)
+
+        # 以前遇到过driver.get(url)一直不返回，但也不报错的问题，这时程序会卡住，设置超时选项能解决这个问题。
+        driver.set_page_load_timeout(8)
+        # # 设置10秒脚本超时时间
+        driver.set_script_timeout(8)
         driver.get(url)
 
         # js = "$('.showMore').click();" # 经常报错，可能jquery没加载问题，alert(1)可以执行
@@ -338,7 +344,7 @@ class AddVisit:
                 if (http_address == ''):
                     break
                 try:
-                    pattern = re.compile(r'https?')
+                    pattern = re.compile(r'https?',flags=re.IGNORECASE) #忽略大小写
                     proxy_type = re.findall(pattern, http_address)[0]
                     proxy_ip = http_address[len(proxy_type) + 1:]  # 因为http后面有一个空格，所以要+1 截取ip
                     # print('类型：'+type[0])
@@ -371,4 +377,4 @@ class AddVisit:
 
 # AddVisit('http://www.baidu.com', False).get_request_byselenium_test()
 # AddVisit('http://mi.tianshitonghe.cn/c12080-26380.html?from=singlemessage', False).get_request_byselenium_formal()
-AddVisit('http://mi.adhbio.cn/art12217-26380.html?from=singlemessage', True).get_request_byselenium_formal()
+AddVisit('http://mi.tianshitonghe.cn/c12080-26380.html?from=singlemessage', True).get_request_byselenium_formal()
